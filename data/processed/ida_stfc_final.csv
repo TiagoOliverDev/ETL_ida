@@ -1,7 +1,7 @@
-grupo_economico,variavel,janeiro_2019,fevereiro_2019,marco_2019,abril_2019,maio_2019,junho_2019,julho_2019,agosto_2019,setembro_2019,outubro_2019,novembro_2019,dezembro_2019
-ALGAR,Indicador de Desempenho no Atendimento (IDA),94.849,98.183,100.0,100.0,,,,,,,,
-EMBRATEL,Indicador de Desempenho no Atendimento (IDA),82.667,89.198,89.216,92.442,,,,,,,,
-OI,Indicador de Desempenho no Atendimento (IDA),38.126,49.73,45.438,39.153,,,,,,,,
-SERCOMTEL,Indicador de Desempenho no Atendimento (IDA),91.555,86.88,71.963,81.969,,,,,,,,
-TIM,Indicador de Desempenho no Atendimento (IDA),13.279,28.411,23.822,27.584,,,,,,,,
-VIVO,Indicador de Desempenho no Atendimento (IDA),61.255,68.965,69.39,66.607,,,,,,,,
+grupo_economico,variavel,janeiro_2019,fevereiro_2019,marco_2019,abril_2019,maio_2019,junho_2019,julho_2019,agosto_2019,setembro_2019,outubro_2019,novembro_2019,dezembro_2019,tipo_servico
+ALGAR,Indicador de Desempenho no Atendimento (IDA),94.849,98.183,100.0,100.0,,,,,,,,,STFC
+EMBRATEL,Indicador de Desempenho no Atendimento (IDA),82.667,89.198,89.216,92.442,,,,,,,,,STFC
+OI,Indicador de Desempenho no Atendimento (IDA),38.126,49.73,45.438,39.153,,,,,,,,,STFC
+SERCOMTEL,Indicador de Desempenho no Atendimento (IDA),91.555,86.88,71.963,81.969,,,,,,,,,STFC
+TIM,Indicador de Desempenho no Atendimento (IDA),13.279,28.411,23.822,27.584,,,,,,,,,STFC
+VIVO,Indicador de Desempenho no Atendimento (IDA),61.255,68.965,69.39,66.607,,,,,,,,,STFC

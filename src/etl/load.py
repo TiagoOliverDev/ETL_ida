@@ -26,10 +26,10 @@ def load_csv_to_db(csv_path):
 
     for _, row in df.iterrows():
         grupo_nome = row["grupo_economico"]
-        servico = row["variavel"]  # ou defina seu serviço de forma adequada
-        # servico = row["tipo_servico"]
+        # servico = row["variavel"]  # ou defina seu serviço de forma adequada
+        servico = row["tipo_servico"]
 
-        colunas_meses = [c for c in df.columns if c not in ["grupo_economico", "variavel"]]
+        colunas_meses = [c for c in df.columns if c not in ["grupo_economico", "variavel", "tipo_servico"]]
 
         for mes_ano_col in colunas_meses:
             valor_ida = row[mes_ano_col]

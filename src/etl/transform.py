@@ -34,7 +34,7 @@ def transform_and_filter_ods_to_csv(ods_path: Path, servico: str) -> Path:
         # Filtra só linhas onde VARIÁVEL == 'Indicador de Desempenho no Atendimento (IDA)'
         df_ida = df[df["VARIÁVEL"] == "Indicador de Desempenho no Atendimento (IDA)"]
         logger.info(f"[TRANSFORM] Linhas após filtro IDA: {len(df_ida)}")
-        # df_ida["tipo_servico"] = servico.upper()
+        df_ida["tipo_servico"] = servico.upper()
 
         # Normaliza os valores das colunas mensais
         colunas_valores = [col for col in df_ida.columns if isinstance(col, str) and col.startswith("20")]
