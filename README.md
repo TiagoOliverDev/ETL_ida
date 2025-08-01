@@ -187,7 +187,7 @@ docker-compose up --build
 ```
 DB_USER=etl_user
 DB_PASSWORD=etl_pass
-DB_HOST=localhost # valor para rodar local via main_etl.py
+DB_HOST=localhost 
 DB_PORT=5544
 DB_NAME=etl_db
 
