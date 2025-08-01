@@ -111,29 +111,70 @@ Baseie-se no modelo `.env.example`.
 docker-compose up --build
 ```
 
-- Airflow: [http://localhost:8080](http://localhost:8080)
-
 ---
 
 ### 5. **Ative a DAG no Airflow**
 
-1. Acesse a interface web do Airflow: [http://localhost:8080](http://localhost:8080)
-2. Loge com as credênciais username=admin e senha=admin
-2. Ative a DAG `etl_ida_dag.py`
-3. No canto superior passe o mouse no menu "Admin", clique em "Connections", clique no "+ em azul", no campo "Connection_id" digite "local_postgres_conn", em "Connection type selecione "Postgres" e insira as credênciais abaixo e clique em save e volte para a home"
+1. Abra seu navegador e acesse a interface web do Airflow: [http://localhost:8080](http://localhost:8080)
+2. Faça login usando as credenciais padrão:
 
-```
-DB_USER=etl_user
-DB_PASSWORD=etl_pass
-DB_HOST=etl-db 
-DB_PORT=5432 
-DB_NAME=etl_db
+    Usuário: admin
+    Senha: admin
 
-```
+3. Ative a DAG chamada ida_etl (ou etl_ida_dag.py se aparecer assim na interface):
 
-4. Feito os passos anteriores e clicando na chave ao lado esquerdo da dag ida_etl vá em "Actions" e clique em Trigger Dag (simbolo de seta pra direita e aguarde o processo rodar e ficar em verde)
+    Encontre a DAG na lista e clique no botão de chave (toggle) para ativá-la.
 
-5. Após processo finalizado e projeto rodando via docker você poderar acessar o banco localhost via dbeaver e consultar os dados nas tabelas e na view vw_taxa_variacao_ida
+4. Configure a conexão com o banco de dados no Airflow:
+
+    No menu superior, passe o mouse sobre Admin e selecione Connections.
+
+    Clique no botão azul + para adicionar uma nova conexão.
+
+    Preencha os campos da seguinte forma:
+
+        ```
+            Connection Id: local_postgres_conn
+
+            Connection Type: Postgres
+
+            Host: etl-db
+
+            Schema: etl_db
+
+            Login: etl_user
+
+            Password: etl_pass
+
+            Port: 5432
+        ```
+
+
+    Clique em Save para salvar a conexão e depois volte para a página inicial do Airflow.
+
+
+5. Execute a DAG manualmente:
+
+    Ao lado direito da DAG ida_etl, no menu Actions Selecione Trigger DAG (ícone de seta para a direita).
+
+    Aguarde a execução ser concluída — o status ficará verde indicando sucesso.
+
+6. Após processo finalizado e projeto rodando via docker você poderar acessar o banco localhost via dbeaver e consultar os dados nas tabelas e na view vw_taxa_variacao_ida
+
+    ```
+    dim_variavel
+
+    dim_tempo
+
+    dim_grupo_economico
+
+    dim_servico
+
+    fato_indicador
+
+    vw_taxa_variacao_ida
+
+    ```
 
 ---
 
@@ -148,7 +189,9 @@ python main_local.py
 
 ## 📝 Observações
 
-- O projeto inteiro  roda via docker-compose mas também é possível rodar local (python main_local.py) após buildar as imagens 
+- O projeto inteiro roda via docker-compose mas também é possível rodar local (python main_local.py) após buildar as imagens 
+
+- Em src\db\sql\create_tables.sql você encontra o SQL (usando COMMENT ON) que o projeto usa automaticamente após criar o banco para gerar as tabelas e a view
 
 ---
 
