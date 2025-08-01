@@ -180,6 +180,19 @@ docker-compose up --build
 
 ---
 
+## Sobre acessar o banco criado pelo docker localhost, seguem credênciais:
+
+![alt text](image.png)
+
+```
+DB_USER=etl_user
+DB_PASSWORD=etl_pass
+DB_HOST=localhost # valor para rodar local via main_etl.py
+DB_PORT=5544
+DB_NAME=etl_db
+
+```
+
 
 ## Sobre a Sobre a VIEW vw_taxa_variacao_ida:
 
