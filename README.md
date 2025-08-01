@@ -7,6 +7,8 @@
 
 Pipeline ETL para extração, transformação e carga dos dados do Índice de Desempenho no Atendimento (IDA) das operadoras de telecomunicações, usando Python, Apache Airflow e PostgreSQL.
 
+O projeto contém uma VIEW no banco de dados 
+
 ---
 
 ## 📚 Visão Geral
@@ -159,7 +161,7 @@ docker-compose up --build
 
     Aguarde a execução ser concluída — o status ficará verde indicando sucesso.
 
-6. Após processo finalizado e projeto rodando via docker você poderar acessar o banco localhost via dbeaver e consultar os dados nas tabelas e na view vw_taxa_variacao_ida
+6. Após processo finalizado e projeto rodando via docker você poderar acessar o banco localhost via dbeaver e consultar os dados nas tabelas e na view. Abaixo seguem as nomeclaturas das tabelas e view.
 
     ```
     dim_variavel
@@ -178,7 +180,30 @@ docker-compose up --build
 
 ---
 
-## 🛠️ Execução Manual (fora do Airflow)
+
+## Sobre a Sobre a VIEW vw_taxa_variacao_ida:
+
+    ```
+
+    No banco de dados, criei a view vw_taxa_variacao_ida para facilitar a análise do Índice de Desempenho no Atendimento (IDA) das operadoras de telecomunicações, focando especificamente na Taxa de Resolvidas em 5 dias úteis (variável identificada pelo id_variavel = 11).
+
+    Essa view agrega os dados da tabela fato fato_indicador filtrando apenas a variável relevante, e realiza os seguintes cálculos:
+
+    Calcula a média mensal do IDA para cada grupo econômico e serviço, com base nos dados das dimensões de tempo, grupo econômico e serviço.
+
+    Aplica uma função de janela para obter o valor médio do mês anterior para cada grupo e serviço.
+
+    Calcula a taxa de variação percentual mensal do IDA comparando o valor do mês atual com o mês anterior, tratando casos especiais como valores nulos ou zero.
+
+    Agrega essa variação por serviço para obter a taxa média de variação mensal.
+
+    Por fim, apresenta a tabela com as colunas de taxa média geral e colunas individuais para cada grupo econômico (ALGAR, CLARO, NEXTEL, OI, SERCOMTEL, TIM, VIVO, EMBRATEL, NET, SKY), facilitando comparações entre operadoras.
+
+    A view permite consultas simples e rápidas para acompanhar o comportamento do índice IDA ao longo do tempo, destacando variações mensais por grupo econômico e tipo de serviço, sendo fundamental para análises de qualidade e desempenho das operadoras.
+
+    ```
+
+## 🛠️ Execução Manual fora do Airflow (mesmo fora do airflow é necessário buildar as imagens com docker-compose para que o banco e as tabelas sejam criadas!!)
 
 ```bash
 python main_local.py
