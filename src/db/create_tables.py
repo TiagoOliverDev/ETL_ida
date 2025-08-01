@@ -1,6 +1,6 @@
 import logging
 from src.db.database import engine, Base
-from src.db.models import DimTempo, DimGrupoEconomico, DimServico, FatoIda
+from src.db.models import DimTempo, DimGrupoEconomico, DimServico, DimVariavel, FatoIndicador
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
