@@ -15,6 +15,29 @@ MESES_MAP = {
 }
 
 def load_csv_to_db(csv_path):
+    """
+        Realiza a carga dos dados de um arquivo CSV para o banco de dados, populando as tabelas
+        dimensionais e a tabela fato seguindo o modelo estrela.
+
+        Passos principais:
+        1. Conecta ao banco de dados via SQLAlchemy e inicia uma sessão.
+        2. Inicializa os repositórios responsáveis por cada dimensão e a tabela fato.
+        3. Lê o CSV com encoding Latin1 para manter compatibilidade com dados em português.
+        4. Identifica colunas fixas (metadados) e colunas de meses (valores mensais).
+        5. Para cada linha do dataframe:
+        - Extrai e limpa os valores das dimensões: grupo econômico, variável e tipo de serviço.
+        - Para cada coluna mensal, extrai o valor e ignora valores nulos.
+        - Converte o nome do mês para número usando um mapeamento, e converte ano para inteiro.
+        - Valida mês, registrando warning em caso de valores inválidos.
+        - Obtém ou cria entradas nas tabelas dimensionais: tempo, grupo econômico, serviço e variável.
+        - Insere a métrica (valor) na tabela fato se ainda não existir, evitando duplicidade.
+        6. Finaliza a transação com commit e fecha a sessão.
+        7. Loga sucesso do carregamento com o caminho do arquivo CSV.
+
+        Parâmetros:
+        - csv_path (str ou Path): caminho do arquivo CSV a ser carregado.
+
+    """
     engine = connect_db_sqlalchemy()
     db_session = get_session(engine)
 

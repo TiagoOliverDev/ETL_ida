@@ -5,6 +5,13 @@ from src.etl.load import load_csv_to_db
 from src.utils.logger import logger
 
 def executar_etl_main():
+    """
+        Executa o pipeline ETL completo:
+        1. Baixa os arquivos ODS via run_extraction.
+        2. Para cada arquivo baixado, transforma e filtra os dados para CSV.
+        3. Carrega os dados do CSV no banco de dados.
+        4. Registra logs para sucesso ou falha em cada etapa.
+    """
     arquivos = run_extraction()
     for ods_path_str in arquivos:
         try:

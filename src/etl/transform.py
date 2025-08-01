@@ -10,6 +10,33 @@ MAPA_MESES = {
 }
 
 def transform_and_filter_ods_to_csv(ods_path: Path, servico: str) -> Path:
+    """
+        Realiza a transformação e limpeza dos dados contidos em um arquivo ODS da Anatel,
+        converte os valores para formato numérico adequado, renomeia colunas de datas para um formato
+        legível (ex: 'janeiro_2019'), adiciona uma coluna identificando o tipo de serviço e salva
+        o resultado final em CSV na pasta 'data/processed'.
+
+        Parâmetros:
+        - ods_path (Path): caminho do arquivo ODS de entrada.
+        - servico (str): nome do serviço (ex: 'smp', 'stfc', 'scm') para identificação na coluna 'tipo_servico'.
+
+        Retorna:
+        - Path: caminho do arquivo CSV gerado.
+
+        Passos principais:
+        1. Carrega o arquivo ODS sem cabeçalho definido (header=None) e lê tudo como string para evitar erros.
+        2. Extrai a linha 8 para ser o cabeçalho das colunas, e os dados a partir da linha 9.
+        3. Renomeia colunas específicas para nomes padronizados.
+        4. Remove linhas com valores ausentes ou vazios nas colunas essenciais 'grupo_economico' e 'variavel'.
+        5. Adiciona coluna 'tipo_servico' com o serviço informado, em caixa alta.
+        6. Identifica colunas cujos nomes correspondem ao padrão 'AAAA-MM' para processamento de valores.
+        7. Para cada coluna de valores, remove pontos (milhar), troca vírgulas por pontos (decimal),
+        e converte para tipo numérico usando função auxiliar 'convert_value_ida'.
+        8. Renomeia colunas de data para formato mais legível, por exemplo, '2019-01' para 'janeiro_2019'.
+        9. Salva o dataframe transformado como CSV na pasta 'data/processed', com codificação Latin1.
+        10. Caso ocorra erro em qualquer etapa, registra no log e propaga a exceção.
+
+    """
     try:
         df_full = pd.read_excel(ods_path, engine="odf", header=None, dtype=str)
         logger.info(f"[TRANSFORM] ODS carregado com {len(df_full)} linhas")
