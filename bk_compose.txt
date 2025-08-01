@@ -1,0 +1,92 @@
+version: "3.8"
+
+services:
+  postgres-airflow:
+    image: postgres:17.5-bookworm
+    environment:
+      POSTGRES_USER: ida
+      POSTGRES_PASSWORD: ida
+      POSTGRES_DB: ida
+    volumes:
+      - postgres_airflow_data:/var/lib/postgresql/data
+    networks:
+      - airflow-net
+
+  airflow-webserver:
+    image: apache/airflow:2.9.1-python3.11
+    depends_on:
+      - postgres-airflow
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://ida:ida@postgres-airflow:5432/ida
+      AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+      _AIRFLOW_WWW_USER_USERNAME: ${_AIRFLOW_WWW_USER_USERNAME}
+      _AIRFLOW_WWW_USER_PASSWORD: ${_AIRFLOW_WWW_USER_PASSWORD}
+      PYTHONPATH: /opt/airflow/src 
+      DB_USER: ida
+      DB_PASSWORD: ida
+      DB_HOST: postgres-airflow
+      DB_PORT: 5432
+      DB_NAME: ida
+      AIRFLOW__WEBSERVER__SECRET_KEY: kPH7NYZqlbQfZgX5J8sGV4KH-sVewvCloQbE_EAeR8w
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./config:/opt/airflow/config
+      - ./data:/opt/airflow/data
+    ports:
+      - "8080:8080"
+    command: >
+      bash -c "
+      airflow db init &&
+      airflow users create --username ${_AIRFLOW_WWW_USER_USERNAME} --password ${_AIRFLOW_WWW_USER_PASSWORD} --firstname Admin --lastname User --role Admin --email admin@example.com  &&
+      airflow webserver
+      "
+    networks:
+      - airflow-net
+
+  airflow-scheduler:
+    image: apache/airflow:2.9.1-python3.11
+    depends_on:
+      - airflow-webserver
+    environment:
+      AIRFLOW__CORE__EXECUTOR: LocalExecutor
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://ida:ida@postgres-airflow:5432/ida
+      PYTHONPATH: /opt/airflow/src 
+      DB_USER: ida
+      DB_PASSWORD: ida
+      DB_HOST: postgres-airflow
+      DB_PORT: 5432
+      DB_NAME: ida
+      AIRFLOW__WEBSERVER__SECRET_KEY: kPH7NYZqlbQfZgX5J8sGV4KH-sVewvCloQbE_EAeR8w
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./src:/opt/airflow/src
+      - ./config:/opt/airflow/config
+      - ./data:/opt/airflow/data
+    command: scheduler
+    networks:
+      - airflow-net
+
+  etl-db:
+    image: postgres:17.5-bookworm
+    container_name: etl-db
+    environment:
+      POSTGRES_USER: etl_user
+      POSTGRES_PASSWORD: etl_pass
+      POSTGRES_DB: etl_db
+    volumes:
+      - ./src/db/sql:/docker-entrypoint-initdb.d
+      - etl_db_data:/var/lib/postgresql/data
+    networks:
+      - airflow-net
+    ports:
+      - "5433:5432"
+
+volumes:
+  postgres_airflow_data:
+  etl_db_data:
+
+networks:
+  airflow-net:
+    driver: bridge

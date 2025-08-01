@@ -1,0 +1,5 @@
+envetl
+logs
+.env
+__pycache__
+sql.txt
