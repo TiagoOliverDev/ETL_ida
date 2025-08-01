@@ -10,7 +10,8 @@ class DimTempoRepository(BaseRepository):
         ).first()
         if instance:
             return instance
+        
         instance = self.model(ano=ano, mes=mes, mes_ano=mes_ano)
         self.db_session.add(instance)
-        self.db_session.flush()
+        self.db_session.flush()  # garante que o ID é atribuído para uso imediato
         return instance

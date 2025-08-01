@@ -10,5 +10,5 @@ class DimGrupoEconomicoRepository(BaseRepository):
             return instance
         instance = self.model(nome_grupo=nome_grupo)
         self.db_session.add(instance)
-        self.db_session.flush()
+        self.db_session.flush()  # para garantir que o id seja atribuído imediatamente
         return instance
